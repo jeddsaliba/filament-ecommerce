@@ -17,6 +17,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
+use TomatoPHP\FilamentEcommerce\FilamentEcommercePlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -54,6 +56,15 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->plugin(\TomatoPHP\FilamentEcommerce\FilamentEcommercePlugin::make());
+            ->plugins([
+                FilamentEcommercePlugin::make(),
+                FilamentApexChartsPlugin::make()
+            ])
+            ->resources([
+                config('filament-logger.activity_resource')
+            ])
+            ->sidebarCollapsibleOnDesktop()
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('5s');
     }
 }
